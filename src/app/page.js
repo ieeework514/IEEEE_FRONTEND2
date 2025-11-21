@@ -1,7 +1,8 @@
 "use client";
 
-import { Suspense, useRef, useState } from "react";
+import { Suspense, useRef, useState, useEffect } from "react";
 import Link from "next/link";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import Hero from "@/components/ui/animated-shader-hero";
 import EventsSection from "@/components/ui/events-section";
 import PastEventsTimeline from "@/components/ui/past-events-timeline";
@@ -17,6 +18,39 @@ const navItems = [
   { label: "Chapters", href: "#chapters" },
   { label: "Team", href: "/team" },
   { label: "Contact", href: "/contact" },
+];
+
+const announcements = [
+  {
+    id: 1,
+    image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=800&q=80",
+    badge: "Announcement",
+    title: "Join Our Upcoming Event",
+    description: "We're excited to announce our upcoming IEEE event that brings together students, professionals, and innovators from across the region. This is an opportunity to network, learn, and be part of the future of technology.",
+    description2: "Don't miss out on this incredible opportunity to connect with industry leaders, participate in hands-on workshops, and explore cutting-edge technologies that are shaping tomorrow.",
+    primaryButton: { text: "Learn More", href: "/events" },
+    secondaryButton: { text: "Contact Us", href: "/contact" }
+  },
+  {
+    id: 2,
+    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80",
+    badge: "Workshop",
+    title: "Technical Workshop Series",
+    description: "Join us for an intensive technical workshop series covering the latest trends in robotics, AI, and automation. Learn from industry experts and get hands-on experience with cutting-edge technologies.",
+    description2: "Our workshops are designed for all skill levels, from beginners to advanced practitioners. Register now to secure your spot!",
+    primaryButton: { text: "Register Now", href: "/events" },
+    secondaryButton: { text: "View Schedule", href: "/events" }
+  },
+  {
+    id: 3,
+    image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80",
+    badge: "Competition",
+    title: "IEEE Robotics Competition 2025",
+    description: "Showcase your robotics skills in our annual competition. Compete with teams from across the region and win exciting prizes. Registration is now open!",
+    description2: "This year's competition features new challenges and categories. Whether you're a beginner or an expert, there's a category for you.",
+    primaryButton: { text: "Register", href: "/events" },
+    secondaryButton: { text: "Learn More", href: "/events" }
+  }
 ];
 
 const chapterCards = [
@@ -61,6 +95,8 @@ const chapterCards = [
 export default function Home() {
   const [isVideoMuted, setIsVideoMuted] = useState(true);
   const videoRef = useRef(null);
+  const [currentAnnouncement, setCurrentAnnouncement] = useState(0);
+  const announcementIntervalRef = useRef(null);
 
   const handleAboutClick = () => {
     window.location.href = "/about";
@@ -87,9 +123,55 @@ export default function Home() {
     });
   };
 
+  // Auto-play announcements
+  useEffect(() => {
+    announcementIntervalRef.current = setInterval(() => {
+      setCurrentAnnouncement((prev) => (prev + 1) % announcements.length);
+    }, 5000); // Change every 5 seconds
+
+    return () => {
+      if (announcementIntervalRef.current) {
+        clearInterval(announcementIntervalRef.current);
+      }
+    };
+  }, []);
+
+  const goToNextAnnouncement = () => {
+    setCurrentAnnouncement((prev) => (prev + 1) % announcements.length);
+    // Reset auto-play timer
+    if (announcementIntervalRef.current) {
+      clearInterval(announcementIntervalRef.current);
+    }
+    announcementIntervalRef.current = setInterval(() => {
+      setCurrentAnnouncement((prev) => (prev + 1) % announcements.length);
+    }, 5000);
+  };
+
+  const goToPreviousAnnouncement = () => {
+    setCurrentAnnouncement((prev) => (prev - 1 + announcements.length) % announcements.length);
+    // Reset auto-play timer
+    if (announcementIntervalRef.current) {
+      clearInterval(announcementIntervalRef.current);
+    }
+    announcementIntervalRef.current = setInterval(() => {
+      setCurrentAnnouncement((prev) => (prev + 1) % announcements.length);
+    }, 5000);
+  };
+
+  const goToAnnouncement = (index) => {
+    setCurrentAnnouncement(index);
+    // Reset auto-play timer
+    if (announcementIntervalRef.current) {
+      clearInterval(announcementIntervalRef.current);
+    }
+    announcementIntervalRef.current = setInterval(() => {
+      setCurrentAnnouncement((prev) => (prev + 1) % announcements.length);
+    }, 5000);
+  };
+
   return (
-    <div className="w-full min-h-screen bg-black text-white relative overflow-x-hidden">
-      <div className="relative z-10 w-full bg-black">
+    <div className="w-full min-h-screen text-white relative overflow-x-hidden" style={{ backgroundColor: '#FF0000' }}>
+      <div className="relative z-10 w-full" style={{ backgroundColor: '#000000' }}>
         <Navbar items={navItems} />
 
         <Hero
@@ -109,6 +191,102 @@ export default function Home() {
             },
           }}
         />
+
+        {/* Announcement Section - Slider */}
+        <section className="w-full py-6 sm:py-8 md:py-12 px-4 sm:px-6 md:px-8 lg:px-12">
+          <div className="max-w-7xl mx-auto">
+            <div className="relative">
+              {/* Slider Container */}
+              <div className="relative overflow-hidden rounded-2xl md:rounded-3xl">
+                <div 
+                  className="flex transition-transform duration-500 ease-in-out"
+                  style={{ transform: `translateX(-${currentAnnouncement * 100}%)` }}
+                >
+                  {announcements.map((announcement) => (
+                    <div
+                      key={announcement.id}
+                      className="min-w-full grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center"
+                    >
+                      {/* Image Poster - Left Side */}
+                      <div className="relative w-full h-[400px] md:h-[500px] rounded-2xl md:rounded-3xl overflow-hidden border border-white/10 shadow-lg">
+                        <img
+                          src={announcement.image}
+                          alt={announcement.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      {/* Text Content - Right Side */}
+                      <div className="space-y-4 md:space-y-6">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-md">
+                          <span className="text-xs uppercase tracking-wider text-white/80 font-semibold">
+                            {announcement.badge}
+                          </span>
+                        </div>
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
+                          {announcement.title}
+                        </h2>
+                        <p className="text-base md:text-lg text-white/70 leading-relaxed">
+                          {announcement.description}
+                        </p>
+                        <p className="text-base md:text-lg text-white/70 leading-relaxed">
+                          {announcement.description2}
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                          <Link
+                            href={announcement.primaryButton.href}
+                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white hover:bg-white/90 text-black font-semibold rounded-lg transition-all hover:scale-105 active:scale-95"
+                          >
+                            {announcement.primaryButton.text}
+                            <ArrowRight className="w-4 h-4" />
+                          </Link>
+                          <Link
+                            href={announcement.secondaryButton.href}
+                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold rounded-lg backdrop-blur-md transition-all hover:scale-105 active:scale-95"
+                          >
+                            {announcement.secondaryButton.text}
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Navigation Buttons */}
+              <button
+                onClick={goToPreviousAnnouncement}
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+                aria-label="Previous announcement"
+              >
+                <ChevronLeft className="w-6 h-6 md:w-7 md:h-7 text-white" />
+              </button>
+              <button
+                onClick={goToNextAnnouncement}
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+                aria-label="Next announcement"
+              >
+                <ChevronRight className="w-6 h-6 md:w-7 md:h-7 text-white" />
+              </button>
+
+              {/* Dots Indicator */}
+              <div className="flex justify-center gap-2 mt-6">
+                {announcements.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToAnnouncement(index)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      index === currentAnnouncement
+                        ? "bg-white w-8"
+                        : "bg-white/30 hover:bg-white/50"
+                    }`}
+                    aria-label={`Go to announcement ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Immersive IEEE video - Reduced padding */}
         <section className="w-full py-6 sm:py-8 md:py-12 px-4 sm:px-6 md:px-8 lg:px-12">

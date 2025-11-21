@@ -1,14 +1,8 @@
 "use client"
-import dynamic from "next/dynamic";
 import Navbar from "@/components/ui/Navbar";
 import { Bot, Cpu, Zap, Target, Users, Award, BookOpen, Calendar, ArrowRight, Code, Microchip, Cog } from "lucide-react";
 import Link from "next/link";
-import SplineScene from "@/components/ui/SplineScene";
-
-const Plasma = dynamic(
-  () => import("@/components/ui/Plasma"),
-  { ssr: false }
-);
+import { SplineScene } from "@/components/ui/splite";
 
 const navItems = [
   { label: "IEEE", href: "/" },
@@ -75,18 +69,6 @@ export default function RASPage() {
 
   return (
     <div className="w-full min-h-screen bg-black text-white relative overflow-x-hidden">
-      {/* Plasma Background */}
-      <div className="fixed inset-0 w-full h-full z-0 pointer-events-none">
-        <Plasma
-          color="#0919f6"
-          speed={1.5}
-          direction="reverse"
-          scale={1.9}
-          opacity={0.8}
-          mouseInteractive={true}
-        />
-      </div>
-
       {/* Content */}
       <div className="relative z-10">
         <Navbar items={navItems} />
@@ -96,24 +78,25 @@ export default function RASPage() {
           <div className="max-w-6xl mx-auto w-full flex flex-col items-center">
             {/* Text Content - Centered, Minimalist */}
             <div className="text-center mb-16 z-10">
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 tracking-tight leading-tight">
+              <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 tracking-tight leading-tight">
                 Robotics and Automation Society
-              </h1>
-              <p className="text-base md:text-lg text-white/70 font-normal max-w-2xl mx-auto">
+              </h3>
+              <p className="text-sm md:text-base text-white/70 font-normal max-w-2xl mx-auto">
                 Empowering the next generation of robotics engineers through innovation, 
                 research, and hands-on learning experiences.
               </p>
             </div>
 
-            {/* 3D Robot Scene - Centered Below Text */}
-            <div className="relative w-[100vw] min-h-screen md:h-[600px] lg:h-[700px] mt-8">
+            {/* 3D Spline Scene - Centered Below Text */}
+            <div className="relative w-screen h-screen">
               <SplineScene 
                 scene="https://prod.spline.design/w12PaRYS19rGu5vn/scene.splinecode"
                 className="w-full h-full"
-              />
+               />
             </div>
 
-            {/* Action Buttons - Centered Below Robot */}
+
+            {/* Action Buttons - Centered Below Scene */}
             <div className="flex flex-wrap gap-4 justify-center mt-16 z-10">
               <Link
                 href="/events"

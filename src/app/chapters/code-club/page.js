@@ -1,14 +1,7 @@
 "use client"
-import dynamic from "next/dynamic";
 import Navbar from "@/components/ui/Navbar";
 import { Code, Cpu, Zap, Target, Users, Award, BookOpen, Calendar, ArrowRight, Terminal, Database, Github } from "lucide-react";
 import Link from "next/link";
-import SplineScene from "@/components/ui/SplineScene";
-
-const Plasma = dynamic(
-  () => import("@/components/ui/Plasma"),
-  { ssr: false }
-);
 
 const navItems = [
   { label: "IEEE", href: "/" },
@@ -75,18 +68,6 @@ export default function CSSocietyPage() {
 
   return (
     <div className="w-full min-h-screen bg-black text-white relative overflow-x-hidden">
-      {/* Plasma Background */}
-      <div className="fixed inset-0 w-full h-full z-0 pointer-events-none">
-        <Plasma
-          color="#0919f6"
-          speed={1.5}
-          direction="reverse"
-          scale={1.9}
-          opacity={0.8}
-          mouseInteractive={true}
-        />
-      </div>
-
       {/* Content */}
       <div className="relative z-10 w-full bg-black">
         <Navbar items={navItems} />
@@ -105,15 +86,7 @@ export default function CSSocietyPage() {
               </p>
             </div>
 
-            {/* 3D Scene - Centered Below Text */}
-            <div className="relative w-full  h-[500px] md:h-[600px] lg:h-[700px] mt-8">
-              <SplineScene 
-                scene={null}
-                className="w-full h-full"
-              />
-            </div>
-
-            {/* Action Buttons - Centered Below Scene */}
+            {/* Action Buttons - Centered Below Text */}
             <div className="flex flex-wrap gap-4 justify-center mt-16 z-10">
               <Link
                 href="/events"
