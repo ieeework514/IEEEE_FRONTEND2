@@ -1,11 +1,7 @@
 "use client"
-import dynamic from "next/dynamic";
 import Navbar from "@/components/ui/Navbar";
 import { Users, Heart, Star, Globe, BookOpen, Target, ArrowRight, Calendar } from "lucide-react";
 import Link from "next/link";
-import SplineScene from "@/components/ui/SplineScene";
-
-const Plasma = dynamic(() => import("@/components/ui/Plasma"), { ssr: false });
 
 const navItems = [
   { label: "IEEE", href: "/" },
@@ -72,18 +68,6 @@ export default function WIEPage() {
 
   return (
     <div className="w-full min-h-screen bg-black text-white relative overflow-x-hidden">
-      
-      {/* Plasma Background */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <Plasma 
-          color="#b832f6"
-          speed={1.5}
-          scale={1.9}
-          opacity={0.9}
-          mouseInteractive={true}
-        />
-      </div>
-
       <div className="relative z-10">
         <Navbar items={navItems} />
 
@@ -97,14 +81,6 @@ export default function WIEPage() {
               Join a global community of women shaping the future of technology, engineering, 
               and empowerment worldwide.
             </p>
-          </div>
-
-          {/* 3D Scene — FIXED AND WORKING */}
-          <div className="relative w-[100vw] min-h-[60vh] mt-8">
-            <SplineScene
-              scene="https://prod.spline.design/w12PaRYS19rGu5vn/scene.splinecode"
-              className="w-full h-full"
-            />
           </div>
 
           {/* Buttons */}

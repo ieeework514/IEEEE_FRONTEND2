@@ -88,13 +88,12 @@ export default function RASPage() {
             </div>
 
             {/* 3D Spline Scene - Centered Below Text */}
-            <div className="relative w-screen h-screen">
+            <div className="relative w-full h-full md:h-full lg:h-fullmt-8">
               <SplineScene 
                 scene="https://prod.spline.design/w12PaRYS19rGu5vn/scene.splinecode"
                 className="w-full h-full"
-               />
+              />
             </div>
-
 
             {/* Action Buttons - Centered Below Scene */}
             <div className="flex flex-wrap gap-4 justify-center mt-16 z-10">

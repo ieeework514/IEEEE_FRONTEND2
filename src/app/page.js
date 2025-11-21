@@ -10,6 +10,7 @@ import Navbar from "@/components/ui/Navbar";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import Lanyard from "@/components/ui/Lanyard";
 import Footer from "@/components/ui/Footer";
+import DomeGallery from "@/components/ui/DomeGallery";
 
 const navItems = [
   { label: "IEEE", href: "/" },
@@ -23,6 +24,16 @@ const navItems = [
 const announcements = [
   {
     id: 1,
+    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80",
+    badge: "Hackathon",
+    title: "CodeForHer Hackathon 2025",
+    description: "Join us for CodeForHer, a hackathon aimed at encouraging innovation, creativity, and problem-solving among students through technology-driven solutions. Focused on promoting women participation in tech and inclusive innovation.",
+    description2: "Open to all undergraduate female students across India. Teams of 3-4 members can participate. Registration is now open! Showcase your skills and win exciting certificates and IEEE goodies.",
+    primaryButton: { text: "Learn More", href: "/events/codeforher" },
+    secondaryButton: { text: "Register Now", href: "/contact" }
+  },
+  {
+    id: 2,
     image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=800&q=80",
     badge: "Announcement",
     title: "Join Our Upcoming Event",
@@ -32,7 +43,7 @@ const announcements = [
     secondaryButton: { text: "Contact Us", href: "/contact" }
   },
   {
-    id: 2,
+    id: 3,
     image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80",
     badge: "Workshop",
     title: "Technical Workshop Series",
@@ -42,7 +53,7 @@ const announcements = [
     secondaryButton: { text: "View Schedule", href: "/events" }
   },
   {
-    id: 3,
+    id: 4,
     image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80",
     badge: "Competition",
     title: "IEEE Robotics Competition 2025",
@@ -79,7 +90,7 @@ const chapterCards = [
     description:
       "Leadership cohorts, industry mentorship, and inclusive labs amplifying women technologists.",
     accent: "from-rose-400/80 via-orange-400/80 to-amber-400/80",
-    href: "/about#wie",
+    href: "/chapters/women",
   },
   {
     id: "comsic",
@@ -88,7 +99,7 @@ const chapterCards = [
     description:
       "Deep dives into SDR, radar labs, and futuristic comms challenges across the COMSOC stack.",
     accent: "from-emerald-400/80 via-teal-400/80 to-sky-400/80",
-    href: "/events#comsic",
+    href: "/chapters/comsoc",
   },
 ];
 
@@ -422,6 +433,62 @@ export default function Home() {
         <div className="py-6 sm:py-8 md:py-12 px-4 sm:px-6 md:px-8 lg:px-12">
           <EventsSection />
         </div>
+
+        {/* Gallery section - Added after upcoming IEEE events */}
+        <section className="w-full py-6 sm:py-8 md:py-12 px-4 sm:px-6 md:px-8 lg:px-12">
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
+              Gallery
+            </h2>
+            <p className="text-white/70 text-base md:text-lg max-w-3xl mx-auto">
+              Explore our collection of moments and memories from IEEE events and activities.
+            </p>
+          </div>
+          <div className="w-full h-[600px] md:h-[700px] lg:h-[800px] rounded-2xl md:rounded-3xl overflow-hidden border border-white/10">
+            <Suspense fallback={
+              <div className="h-full flex items-center justify-center text-white/60 text-base">
+                Loading gallery…
+              </div>
+            }>
+              <DomeGallery 
+              images={[
+                {
+                  src: 'https://images.unsplash.com/photo-1485579149621-3123dd979885?auto=format&fit=crop&w=900&q=80',
+                  alt: 'IEEE Event'
+                },
+                {
+                  src: 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=900&q=80',
+                  alt: 'Hackathon'
+                },
+                {
+                  src: 'https://images.unsplash.com/photo-1482192597420-4817fdd7e8b0?auto=format&fit=crop&w=900&q=80',
+                  alt: 'Robotics Event'
+                },
+                {
+                  src: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=900&q=80',
+                  alt: 'Workshop'
+                },
+                {
+                  src: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80',
+                  alt: 'Conference'
+                },
+                {
+                  src: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=900&q=80',
+                  alt: 'Team Event'
+                }
+              ]}
+              fit={0.5}
+              minRadius={400}
+              maxRadius={800}
+              grayscale={false}
+              openedImageWidth="600px"
+              openedImageHeight="600px"
+              />
+            </Suspense>
+          </div>
+        </section>
+
+           
         
         <div className="py-6 sm:py-8 md:py-12 px-4 sm:px-6 md:px-8 lg:px-12">
           <PastEventsTimeline />

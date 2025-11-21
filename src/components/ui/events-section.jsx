@@ -6,6 +6,16 @@ import { useRouter } from 'next/navigation';
 // Data for the events
 const events = [
   {
+    name: 'CodeForHer Hackathon 2025',
+    className: 'codeforher',
+    image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
+    route: '/events/codeforher',
+    color: '#ec4899',
+    tag: 'WIE & CS',
+    attendees: '200+',
+    timeline: 'Dec 2025'
+  },
+  {
     name: 'CodeQuest 2025',
     className: 'codequest',
     image: 'https://images.unsplash.com/photo-1485579149621-3123dd979885?auto=format&fit=crop&w=900&q=80',
