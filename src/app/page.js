@@ -1,0 +1,256 @@
+"use client";
+
+import { Suspense, useRef, useState } from "react";
+import Link from "next/link";
+import Hero from "@/components/ui/animated-shader-hero";
+import EventsSection from "@/components/ui/events-section";
+import PastEventsTimeline from "@/components/ui/past-events-timeline";
+import Navbar from "@/components/ui/Navbar";
+import { ContainerScroll } from "@/components/ui/container-scroll-animation";
+import Lanyard from "@/components/ui/Lanyard";
+import Footer from "@/components/ui/Footer";
+
+const navItems = [
+  { label: "IEEE", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Events", href: "/events" },
+  { label: "Chapters", href: "#chapters" },
+  { label: "Team", href: "/team" },
+  { label: "Contact", href: "/contact" },
+];
+
+const chapterCards = [
+  {
+    id: "ras",
+    title: "IEEE RAS",
+    subtitle: "Robotics & Automation Society",
+    description:
+      "Autonomous systems, bio-mechanics labs, and rapid prototyping rigs driven by our RAS fellows.",
+    accent: "from-cyan-400/80 via-blue-500/80 to-purple-600/80",
+    href: "/chapters/ras",
+  },
+  {
+    id: "cs",
+    title: "IEEE Computer Society",
+    subtitle: "Code Club",
+    description:
+      "Flagship hackathons, full-stack build weeks, and low-level labs curated by the Computer Society.",
+    accent: "from-violet-500/80 via-fuchsia-500/80 to-pink-500/80",
+    href: "/chapters/code-club",
+  },
+  {
+    id: "wie",
+    title: "IEEE WIE",
+    subtitle: "Women in Engineering",
+    description:
+      "Leadership cohorts, industry mentorship, and inclusive labs amplifying women technologists.",
+    accent: "from-rose-400/80 via-orange-400/80 to-amber-400/80",
+    href: "/about#wie",
+  },
+  {
+    id: "comsic",
+    title: "IEEE COMSOC",
+    subtitle: "Comms & Signal Chapter",
+    description:
+      "Deep dives into SDR, radar labs, and futuristic comms challenges across the COMSOC stack.",
+    accent: "from-emerald-400/80 via-teal-400/80 to-sky-400/80",
+    href: "/events#comsic",
+  },
+];
+
+export default function Home() {
+  const [isVideoMuted, setIsVideoMuted] = useState(true);
+  const videoRef = useRef(null);
+
+  const handleAboutClick = () => {
+    window.location.href = "/about";
+  };
+
+  const handleEventsClick = () => {
+    window.location.href = "/events";
+  };
+
+  const toggleVideoAudio = () => {
+    setIsVideoMuted((prev) => {
+      const nextState = !prev;
+      if (videoRef.current) {
+        videoRef.current.muted = nextState;
+        if (!nextState) {
+          videoRef.current
+            .play()
+            .catch(() => {
+              /* noop */
+            });
+        }
+      }
+      return nextState;
+    });
+  };
+
+  return (
+    <div className="w-full min-h-screen bg-black text-white relative overflow-x-hidden">
+      <div className="relative z-10 w-full bg-black">
+        <Navbar items={navItems} />
+
+        <Hero
+          headline={{
+            line1: "IEEE",
+            line2: "Student Branch",
+          }}
+          subtitle="Rajiv Gandhi Institute Of Petroleum Technology"
+          buttons={{
+            primary: {
+              text: "About Us",
+              onClick: handleAboutClick,
+            },
+            secondary: {
+              text: "Explore Events",
+              onClick: handleEventsClick,
+            },
+          }}
+        />
+
+        {/* Immersive IEEE video - Reduced padding */}
+        <section className="w-full py-6 sm:py-8 md:py-12 px-4 sm:px-6 md:px-8 lg:px-12">
+          <div className="relative rounded-2xl md:rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(0,0,0,0.5)] bg-black flex justify-center items-center">
+            <video
+              ref={videoRef}
+              className="w-full min-h-[40vh] md:min-h-[60vh] object-contain mx-auto"
+              src="/videos/vid_ieee.mp4"
+              autoPlay
+              loop
+              playsInline
+              muted={isVideoMuted}
+            />
+            <button
+              onClick={toggleVideoAudio}
+              className="absolute bottom-4 right-4 md:bottom-6 md:right-6 px-4 py-2.5 md:px-5 md:py-3 rounded-full bg-white/15 backdrop-blur-md border border-white/30 text-sm font-semibold tracking-wide hover:bg-white/25 transition"
+            >
+              {isVideoMuted ? "🔊 Audio" : "🔇 Mute"}
+            </button>
+          </div>
+        </section>
+
+        {/* IEEE Chapters showcase - Reduced padding and tighter spacing */}
+        <section
+          id="chapters"
+          className="w-full py-6 sm:py-8 md:py-12 px-4 sm:px-6 md:px-8 lg:px-12"
+        >
+          <ContainerScroll
+            titleComponent={
+              <div className="space-y-2 md:space-y-3">
+                <p className="text-xs sm:text-sm uppercase tracking-[0.4em] md:tracking-[0.5em] text-white/50">
+                  Chapters
+                </p>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold">
+                  IEEE Societies & Fellowships
+                </h2>
+                <p className="text-white/70 text-base md:text-lg max-w-3xl mx-auto">
+                  Scroll to explore the four verticals steering innovation at
+                  IEEE RGIPT — each tile jumps you into its deep dives, labs,
+                  and flagship releases.
+                </p>
+              </div>
+            }
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5 h-full w-full p-4 md:p-6">
+              {chapterCards.map((chapter) => (
+                <Link
+                  key={chapter.id}
+                  href={chapter.href}
+                  className="group relative p-5 md:p-6 rounded-2xl md:rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl h-full flex flex-col justify-between hover:border-white/30 transition"
+                >
+                  <div
+                    className={`absolute inset-0 rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-100 transition duration-500 blur-3xl bg-gradient-to-br ${chapter.accent}`}
+                  />
+                  <div className="relative z-10 space-y-2">
+                    <span
+                      className={`inline-flex text-xs tracking-[0.4em] uppercase px-3 md:px-4 py-1 rounded-full bg-gradient-to-r ${chapter.accent} text-white/90`}
+                    >
+                      {chapter.title}
+                    </span>
+                    <h3 className="text-xl md:text-2xl font-semibold">{chapter.subtitle}</h3>
+                    <p className="text-white/70 text-sm leading-relaxed">
+                      {chapter.description}
+                    </p>
+                  </div>
+                  <div className="relative z-10 mt-4 text-sm font-semibold text-white/80 group-hover:text-white transition flex items-center gap-2">
+                    Jump In
+                    <span className="inline-flex w-7 h-7 md:w-8 md:h-8 rounded-full border border-white/30 items-center justify-center group-hover:translate-x-1 transition text-sm">
+                      ↗
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </ContainerScroll>
+        </section>
+
+        {/* Interactive Lanyard - Reduced padding */}
+        <section className="w-full py-6 sm:py-8 md:py-12 px-4 sm:px-6 md:px-8 lg:px-12">
+          <div className="rounded-2xl md:rounded-3xl border border-white/10 bg-black/60 backdrop-blur-xl overflow-hidden shadow-[0_20px_80px_rgba(0,0,0,0.6)]">
+            <Suspense fallback={
+              <div className="h-[50vh] md:h-[60vh] flex items-center justify-center text-white/60 text-base">
+                Loading interactive badge…
+              </div>
+            }>
+              <Lanyard />
+            </Suspense>
+          </div>
+        </section>
+
+        {/* Membership CTA - Reduced padding and tighter internal spacing */}
+        <section className="w-full py-6 sm:py-8 md:py-12 px-4 sm:px-6 md:px-8 lg:px-12">
+          <div className="max-w-5xl mx-auto rounded-2xl md:rounded-3xl border border-white/15 bg-white/5 backdrop-blur-2xl p-6 md:p-8 space-y-4 md:space-y-6 text-center">
+            <p className="text-xs sm:text-sm uppercase tracking-[0.4em] md:tracking-[0.5em] text-white/60">
+              Become A Member
+            </p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold">
+              Access perks, labs, and the IEEE RGIPT portal
+            </h2>
+            <p className="text-white/70 text-base max-w-3xl mx-auto">
+              Join us to unlock chapter-specific mentorship, lab reservations,
+              and the unified payment portal (₹2200 via Razorpay) that keeps
+              your membership active across all societies.
+            </p> 
+            <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+              <Link
+                href="/membership"
+                className="px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl bg-gradient-to-r from-purple-500 to-blue-500 font-semibold text-base text-white shadow-lg shadow-purple-500/40 hover:scale-[1.02] transition"
+              >
+                View Perks & Join
+              </Link>
+              <Link
+                href="/signin"
+                className="px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl border border-white/30 text-base text-white/90 hover:text-white hover:border-white/60 transition"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/signup"
+                className="px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl border border-white/30 text-base text-white/90 hover:text-white hover:border-white/60 transition"
+              >
+                Sign Up
+              </Link>
+            </div>
+            <p className="text-xs text-white/60 pt-2">
+              Secure Razorpay payments, instant receipts, and member dashboard
+              access the moment your ₹2200 fee is confirmed.
+            </p>
+          </div>
+        </section>
+
+        {/* Events sections - Reduced padding */}
+        <div className="py-6 sm:py-8 md:py-12 px-4 sm:px-6 md:px-8 lg:px-12">
+          <EventsSection />
+        </div>
+        
+        <div className="py-6 sm:py-8 md:py-12 px-4 sm:px-6 md:px-8 lg:px-12">
+          <PastEventsTimeline />
+        </div>
+
+        <Footer />
+      </div>
+    </div>
+  );
+}
